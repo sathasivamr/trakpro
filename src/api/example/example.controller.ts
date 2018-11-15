@@ -12,7 +12,7 @@ export class ExampleController {
      * Get all
      * @param {*} req
      * @param {*} res
-     * @param {*} next
+     * @param {*} nex
      */
     public static async getAll(req: Request, res: Response, next: NextFunction): Promise<any> {
 
@@ -73,6 +73,5 @@ export class ExampleController {
             });
         }
     }
-    //getAllTrakproUnits
 
 }
