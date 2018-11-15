@@ -3,6 +3,12 @@
 import * as winston from 'winston';
 import * as request from 'request-promise-native';
 import * as moment from 'moment';
+
+var CryptoJS = require('crypto-js');
+
+
+
+
 export class ExampleDelegate {
 
     public static hostUrl = 'https://hst-api.wialon.com/wialon/ajax.html?';
@@ -130,14 +136,27 @@ export class ExampleDelegate {
 
 
     public static async getAllTrakproUnits() {
-        let sid = await this.getAllTrakproSid();
-        console.log('meessge', sid);
-        if (sid) {
-            let unitDetails = await this.getAllTrakproUnit(sid);
-            let resultString = await this.parseUnits(JSON.parse(unitDetails));
-            return { 'isSuccess': true, 'responseBody': resultString };
-        } else {
-            return { 'isSuccess': false, 'responseBody': 'error while getting the data' };
+
+        try {
+            // var text = '1321U1542298869U2863-StJohnAmbulance';
+            // var key = CryptoJS.enc.Base64.parse('#base64Key#');
+            // var iv = CryptoJS.enc.Base64.parse('#base64IV#');
+            // var encrypted = CryptoJS.AES.encrypt(text, key, { iv: iv });
+            // console.log('string'+ encrypted.toString());
+            // var decrypted = CryptoJS.AES.decrypt(encrypted, key, { iv: iv });
+            // console.log(decrypted.toString(CryptoJS.enc.Utf8));
+
+
+            let sid = await this.getAllTrakproSid();
+            if (sid) {
+                let unitDetails = await this.getAllTrakproUnit(sid);
+                let resultString = await this.parseUnits(JSON.parse(unitDetails));
+                return { 'isSuccess': true, 'responseBody': resultString };
+            } else {
+                return { 'isSuccess': false, 'responseBody': 'error while getting the data' };
+            }
+        } catch (err) {
+            console.log(err);
         }
     }
 
@@ -178,7 +197,6 @@ export class ExampleDelegate {
                 uri: siteURL,
             };
             let result = await request.post(options);
-            console.log('meessge', result);
             return JSON.parse(result).eid;
         } catch (err) {
             return false;

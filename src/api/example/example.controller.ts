@@ -41,7 +41,21 @@ export class ExampleController {
     public static async getUnitDetails(req: Request, res: Response, next: NextFunction): Promise<any> {
 
         try {
-            if (req.query.userName === 'StJohnAmbulance') {
+
+            let apiKey = req.originalUrl.split('apiKey=')[1];
+            console.log(apiKey);
+            if (!apiKey) {
+                res.send({
+                    'isSuccess': false,
+                    'message': 'Missing API Key',
+                    'Request Format': 'Contact Trakpro team',
+                });
+            }
+
+            apiKey = apiKey ? apiKey.split('&')[0] : '';
+
+            if (req.query.userName === 'StJohnAmbulance' &&
+            apiKey === 'gsjA5+cCU5gcVHHlgBVD8pCWRCqNqR1TIKug2rOrpvVNvoAL+pBQzZsxYA3i3r2E') {
                 let result = await ExampleDelegate.getAllTrakproUnits();
                 res.send({ result });
             } else {
@@ -56,7 +70,6 @@ export class ExampleController {
                 'isSuccess': false,
                 'message': 'Error IN Getting the Result',
                 'Request Format': 'Contact Trakpro team',
-                'err': err
             });
         }
     }
