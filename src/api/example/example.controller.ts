@@ -43,7 +43,6 @@ export class ExampleController {
         try {
 
             let apiKey = req.originalUrl.split('apiKey=')[1];
-            console.log(apiKey);
             if (!apiKey) {
                 res.send({
                     'isSuccess': false,
